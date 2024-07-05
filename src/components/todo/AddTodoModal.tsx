@@ -11,21 +11,31 @@ import {
 } from '../ui/dialog';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { addTodo, ITodo } from '@/redux/features/todo/todoSlice';
 
 const AddTodoModal = () => {
   const [task, setTask] = useState('');
   const [description, setDescription] = useState('');
+  
+  const { todos } = useAppSelector((state) => state.todo)
+  const dispatch = useAppDispatch()
+
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     const randomString = Math.random().toString(36).substring(2, 7);
 
-    const taskDetails = {
+    const taskDetails: ITodo = {
       id: randomString,
       title: task,
       description: description,
+      priority: "Low",
     };
+
+    dispatch(addTodo(taskDetails))
+    console.log(todos)
   };
 
   return (
